@@ -210,12 +210,63 @@ function HomePage() {
 
 /* ---------------- Sections ---------------- */
 
+const TYPING_PHRASES = [
+  "Modern Websites",
+  "Intelligent Applications",
+  "AI & Automation",
+];
+
+function useTypingCycle(phrases: string[], typeSpeed = 70, deleteSpeed = 38, hold = 1400) {
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = phrases[index % phrases.length];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && text === current) {
+      timeout = setTimeout(() => setDeleting(true), hold);
+    } else if (deleting && text === "") {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % phrases.length);
+    } else {
+      timeout = setTimeout(() => {
+        setText((t) =>
+          deleting ? current.slice(0, t.length - 1) : current.slice(0, t.length + 1)
+        );
+      }, deleting ? deleteSpeed : typeSpeed);
+    }
+    return () => clearTimeout(timeout);
+  }, [text, deleting, index, phrases, typeSpeed, deleteSpeed, hold]);
+
+  return text;
+}
+
 function Hero() {
+  const typed = useTypingCycle(TYPING_PHRASES);
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-gradient-mesh" />
       <div className="absolute inset-0 -z-10 grid-bg opacity-60" />
-      <div className="absolute -top-32 left-1/2 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-gradient-brand opacity-25 blur-3xl animate-blob" />
+
+      {/* Soft floating gradient shape behind hero text — blue + cyan */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[520px] w-[920px] -translate-x-1/2 rounded-full opacity-60 blur-3xl animate-float-blob"
+        style={{
+          background:
+            "radial-gradient(closest-side, oklch(0.7 0.18 230 / 0.55), transparent 70%), radial-gradient(closest-side, oklch(0.78 0.16 200 / 0.45) 10%, transparent 65%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-[-10%] top-40 -z-10 h-[360px] w-[520px] rounded-full opacity-40 blur-3xl animate-float-blob"
+        style={{
+          background: "radial-gradient(closest-side, oklch(0.68 0.18 215 / 0.6), transparent 70%)",
+          animationDelay: "-6s",
+        }}
+      />
 
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-20 md:grid-cols-2 md:px-8 md:pb-32 md:pt-28">
         <div className="animate-fade-up">
@@ -226,16 +277,22 @@ function Hero() {
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
             Modern technology, <span className="text-gradient">delivered with clarity</span>.
           </h1>
+          <div className="mt-5 flex min-h-[2.4em] items-center text-2xl font-display font-semibold tracking-tight md:text-3xl">
+            <span className="text-muted-foreground mr-3">We build</span>
+            <span className="text-gradient typing-caret" aria-live="polite">
+              {typed || "\u00A0"}
+            </span>
+          </div>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
             iViz is the digital practice of InfoViz LLC — building websites,
             custom applications, AI solutions, automation, and Microsoft 365
             experiences for organizations that want results, not buzzwords.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="xl" className="rounded-full animate-soft-pulse">
               <a href="#projects">View My Work <ArrowRight className="h-4 w-4" /></a>
             </Button>
-            <Button asChild variant="soft" size="xl">
+            <Button asChild variant="soft" size="xl" className="rounded-full animate-soft-pulse" style={{ animationDelay: "-1.3s" }}>
               <a href="#contact">Hire Me</a>
             </Button>
           </div>
