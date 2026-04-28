@@ -418,17 +418,36 @@ function Skills() {
                 <div className={`inline-grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${cat.accent} text-brand-foreground shadow-elegant`}>
                   <cat.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-5 font-display text-lg font-semibold">{cat.title}</h3>
-                <ul className="mt-4 space-y-2.5">
+                <h3 className={`mt-5 font-display text-lg font-semibold ${cat.headerColor}`}>{cat.title}</h3>
+
+                {/* Skill level bar */}
+                <div className="mt-4">
+                  <div className="mb-1.5 flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <span>{cat.levelLabel}</span>
+                    <span className={cat.headerColor}>{cat.level}%</span>
+                  </div>
+                  <div className="level-bar" style={{ ["--bar-fill" as never]: cat.barFill }}>
+                    <span style={{ width: `${cat.level}%` }} />
+                  </div>
+                </div>
+
+                {/* Tech icons with hover-name reveal */}
+                <div className="mt-6 grid grid-cols-4 gap-3">
                   {cat.items.map((it) => (
-                    <li key={it.name} className="flex items-center gap-3 rounded-lg border border-border/60 bg-background/40 px-3 py-2 text-sm text-foreground/90 transition hover:border-brand/40 hover:bg-secondary/60">
-                      <span className="grid h-7 w-7 place-items-center rounded-md bg-secondary text-cyan">
-                        <it.icon className="h-3.5 w-3.5" />
+                    <div
+                      key={it.name}
+                      className="skill-icon group/icon flex flex-col items-center"
+                    >
+                      <span
+                        className="grid h-12 w-12 place-items-center rounded-xl border border-border/60 bg-background/50 text-foreground transition hover:scale-110 hover:border-brand/50 hover:text-cyan"
+                        aria-label={it.name}
+                      >
+                        <it.icon className="h-5 w-5" />
                       </span>
-                      {it.name}
-                    </li>
+                      <span className="skill-name">{it.name}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           ))}
@@ -437,6 +456,37 @@ function Skills() {
     </section>
   );
 }
+
+const PROJECT_CATEGORIES = [
+  {
+    key: "Frontend",
+    label: "Frontend",
+    color: "text-cyan",
+    bg: "bg-cyan/10 border-cyan/30",
+    indices: [0],
+  },
+  {
+    key: "Backend",
+    label: "Backend",
+    color: "text-emerald-400",
+    bg: "bg-emerald-400/10 border-emerald-400/30",
+    indices: [2],
+  },
+  {
+    key: "AI",
+    label: "AI & ML",
+    color: "text-violet-300",
+    bg: "bg-violet-500/10 border-violet-400/30",
+    indices: [1],
+  },
+  {
+    key: "DevOps",
+    label: "DevOps & Strategy",
+    color: "text-amber-300",
+    bg: "bg-amber-400/10 border-amber-400/30",
+    indices: [3],
+  },
+] as const;
 
 function Projects() {
   return (
@@ -450,34 +500,69 @@ function Projects() {
           />
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {PROJECTS.map((p) => (
-            <article
-              key={p.title}
-              className="reveal card-glow group relative overflow-hidden rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-elegant md:p-9"
-            >
-              <div className={`absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br ${p.gradient} blur-3xl transition-opacity duration-500 group-hover:opacity-100`} />
-              <div className="relative">
-                <div className="flex items-center gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-brand text-brand-foreground shadow-elegant">
-                    <p.icon className="h-6 w-6" />
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan">Capability</span>
-                </div>
-                <h3 className="mt-5 font-display text-2xl font-bold tracking-tight md:text-[26px]">{p.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{p.desc}</p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {p.badges.map((b) => (
-                    <span
-                      key={b}
-                      className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-medium text-foreground/90 transition group-hover:border-brand/40"
-                    >
-                      {b}
-                    </span>
-                  ))}
-                </div>
+        <div className="mt-14 space-y-16">
+          {PROJECT_CATEGORIES.map((cat) => (
+            <div key={cat.key} className="reveal">
+              <div className="flex items-center gap-3">
+                <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] ${cat.color} ${cat.bg}`}>
+                  {cat.label}
+                </span>
+                <span className={`h-px flex-1 bg-gradient-to-r ${cat.color === "text-cyan" ? "from-cyan/40" : cat.color === "text-emerald-400" ? "from-emerald-400/40" : cat.color === "text-violet-300" ? "from-violet-400/40" : "from-amber-400/40"} to-transparent`} />
               </div>
-            </article>
+
+              <div className="mt-6 grid gap-6 md:grid-cols-2">
+                {cat.indices.map((i) => {
+                  const p = PROJECTS[i];
+                  return (
+                    <article
+                      key={p.title}
+                      className="project-card card-glow group relative overflow-hidden rounded-3xl p-7 md:p-9"
+                      style={{
+                        ["--card-accent" as never]: p.accentBorder,
+                        ["--card-glow" as never]: p.accentGlow,
+                      }}
+                    >
+                      <div className={`pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br ${p.gradient} blur-3xl transition-opacity duration-500 group-hover:opacity-100`} />
+                      <div className="relative">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="grid h-12 w-12 place-items-center rounded-2xl text-brand-foreground shadow-elegant"
+                            style={{ background: p.accentBorder }}
+                          >
+                            <p.icon className="h-6 w-6" />
+                          </div>
+                          <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${p.accentText}`}>{cat.label}</span>
+                        </div>
+                        <h3 className="mt-5 font-display text-2xl font-bold tracking-tight md:text-[26px]">{p.title}</h3>
+                        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{p.desc}</p>
+                        <div className="mt-6 flex flex-wrap gap-2">
+                          {p.badges.map((b) => (
+                            <span
+                              key={b}
+                              className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-medium text-foreground/90"
+                            >
+                              {b}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="mt-7 flex flex-wrap gap-3">
+                          <Button asChild size="sm" variant="hero" className="rounded-full">
+                            <a href={p.demo} target="_blank" rel="noreferrer">
+                              <ExternalLink className="h-4 w-4" /> Live Demo
+                            </a>
+                          </Button>
+                          <Button asChild size="sm" variant="soft" className="rounded-full">
+                            <a href={p.repo} target="_blank" rel="noreferrer">
+                              <Github className="h-4 w-4" /> GitHub
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </div>
       </div>
