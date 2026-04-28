@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
-  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck,
+  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck, Github, ExternalLink,
   Zap, Users, Layers, CheckCircle2, Mail, Phone, MapPin, Send, Briefcase,
   Award, Rocket, Building2, GraduationCap, Atom, Palette, Database, Cog,
   GitBranch, Server, Brain, Workflow, MessageSquareCode, CloudUpload,
@@ -43,7 +43,11 @@ export const Route = createFileRoute("/")({
 const SKILLS = [
   {
     title: "Frontend",
-    accent: "from-brand to-cyan",
+    accent: "from-cyan to-brand",
+    headerColor: "text-cyan",
+    barFill: "linear-gradient(90deg, oklch(0.78 0.16 200), oklch(0.7 0.18 220))",
+    level: 92,
+    levelLabel: "Expert",
     icon: Palette,
     items: [
       { name: "React", icon: Atom },
@@ -54,7 +58,11 @@ const SKILLS = [
   },
   {
     title: "Backend",
-    accent: "from-cyan to-brand",
+    accent: "from-emerald-400 to-emerald-600",
+    headerColor: "text-emerald-400",
+    barFill: "linear-gradient(90deg, oklch(0.78 0.17 150), oklch(0.62 0.18 155))",
+    level: 88,
+    levelLabel: "Advanced",
     icon: Server,
     items: [
       { name: "Node.js", icon: Server },
@@ -64,8 +72,12 @@ const SKILLS = [
     ],
   },
   {
-    title: "AI",
-    accent: "from-violet to-brand",
+    title: "AI & ML",
+    accent: "from-violet to-fuchsia-500",
+    headerColor: "text-violet-300",
+    barFill: "linear-gradient(90deg, oklch(0.7 0.2 300), oklch(0.65 0.22 320))",
+    level: 85,
+    levelLabel: "Advanced",
     icon: Brain,
     items: [
       { name: "OpenAI", icon: Brain },
@@ -76,7 +88,11 @@ const SKILLS = [
   },
   {
     title: "DevOps",
-    accent: "from-brand to-violet",
+    accent: "from-amber-400 to-orange-500",
+    headerColor: "text-amber-300",
+    barFill: "linear-gradient(90deg, oklch(0.85 0.16 85), oklch(0.72 0.18 55))",
+    level: 80,
+    levelLabel: "Advanced",
     icon: CloudUpload,
     items: [
       { name: "Vercel", icon: CloudUpload },
@@ -92,7 +108,12 @@ const PROJECTS = [
     title: "Website & Digital Presence Buildouts",
     desc: "Modern, fast, accessible websites that turn first impressions into qualified conversations — branded, content-rich, and built to grow.",
     badges: ["Next.js", "TypeScript", "Tailwind", "SEO"],
-    gradient: "from-brand/30 via-cyan/20 to-transparent",
+    gradient: "from-cyan/30 via-brand/20 to-transparent",
+    accentBorder: "linear-gradient(135deg, oklch(0.78 0.16 200), oklch(0.7 0.18 220))",
+    accentGlow: "oklch(0.7 0.18 210 / 0.55)",
+    accentText: "text-cyan",
+    demo: "#",
+    repo: "#",
     icon: Globe,
   },
   {
@@ -100,20 +121,35 @@ const PROJECTS = [
     desc: "Practical AI assistants and copilots that turn institutional knowledge into instant answers and remove hours of repetitive work each week.",
     badges: ["OpenAI", "RAG", "Automation", "Copilots"],
     gradient: "from-violet/30 via-brand/20 to-transparent",
+    accentBorder: "linear-gradient(135deg, oklch(0.7 0.2 300), oklch(0.65 0.22 320))",
+    accentGlow: "oklch(0.65 0.22 310 / 0.55)",
+    accentText: "text-violet-300",
+    demo: "#",
+    repo: "#",
     icon: Bot,
   },
   {
     title: "Application Development & Integration",
     desc: "Custom business apps and integrations across SharePoint, Teams, Power Platform, and APIs — designed around your workflows, not the other way around.",
     badges: [".NET", "Power Platform", "M365", "APIs"],
-    gradient: "from-cyan/30 via-brand/20 to-transparent",
+    gradient: "from-emerald-400/30 via-cyan/20 to-transparent",
+    accentBorder: "linear-gradient(135deg, oklch(0.78 0.17 150), oklch(0.62 0.18 155))",
+    accentGlow: "oklch(0.7 0.18 150 / 0.55)",
+    accentText: "text-emerald-400",
+    demo: "#",
+    repo: "#",
     icon: Code2,
   },
   {
     title: "Technology Strategy & Modernization",
     desc: "Vendor-neutral guidance to modernize legacy systems, prioritize the right initiatives, and align technology investment with measurable outcomes.",
     badges: ["Strategy", "Architecture", "Cloud", "Roadmaps"],
-    gradient: "from-brand/30 via-violet/20 to-transparent",
+    gradient: "from-amber-400/30 via-orange-500/20 to-transparent",
+    accentBorder: "linear-gradient(135deg, oklch(0.85 0.16 85), oklch(0.72 0.18 55))",
+    accentGlow: "oklch(0.78 0.17 70 / 0.55)",
+    accentText: "text-amber-300",
+    demo: "#",
+    repo: "#",
     icon: Compass,
   },
 ];
@@ -174,12 +210,63 @@ function HomePage() {
 
 /* ---------------- Sections ---------------- */
 
+const TYPING_PHRASES = [
+  "Modern Websites",
+  "Intelligent Applications",
+  "AI & Automation",
+];
+
+function useTypingCycle(phrases: string[], typeSpeed = 70, deleteSpeed = 38, hold = 1400) {
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = phrases[index % phrases.length];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && text === current) {
+      timeout = setTimeout(() => setDeleting(true), hold);
+    } else if (deleting && text === "") {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % phrases.length);
+    } else {
+      timeout = setTimeout(() => {
+        setText((t) =>
+          deleting ? current.slice(0, t.length - 1) : current.slice(0, t.length + 1)
+        );
+      }, deleting ? deleteSpeed : typeSpeed);
+    }
+    return () => clearTimeout(timeout);
+  }, [text, deleting, index, phrases, typeSpeed, deleteSpeed, hold]);
+
+  return text;
+}
+
 function Hero() {
+  const typed = useTypingCycle(TYPING_PHRASES);
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-gradient-mesh" />
       <div className="absolute inset-0 -z-10 grid-bg opacity-60" />
-      <div className="absolute -top-32 left-1/2 -z-10 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-gradient-brand opacity-25 blur-3xl animate-blob" />
+
+      {/* Soft floating gradient shape behind hero text — blue + cyan */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[520px] w-[920px] -translate-x-1/2 rounded-full opacity-60 blur-3xl animate-float-blob"
+        style={{
+          background:
+            "radial-gradient(closest-side, oklch(0.7 0.18 230 / 0.55), transparent 70%), radial-gradient(closest-side, oklch(0.78 0.16 200 / 0.45) 10%, transparent 65%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-[-10%] top-40 -z-10 h-[360px] w-[520px] rounded-full opacity-40 blur-3xl animate-float-blob"
+        style={{
+          background: "radial-gradient(closest-side, oklch(0.68 0.18 215 / 0.6), transparent 70%)",
+          animationDelay: "-6s",
+        }}
+      />
 
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-20 md:grid-cols-2 md:px-8 md:pb-32 md:pt-28">
         <div className="animate-fade-up">
@@ -190,16 +277,22 @@ function Hero() {
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
             Modern technology, <span className="text-gradient">delivered with clarity</span>.
           </h1>
+          <div className="mt-5 flex min-h-[2.4em] items-center text-2xl font-display font-semibold tracking-tight md:text-3xl">
+            <span className="text-muted-foreground mr-3">We build</span>
+            <span className="text-gradient typing-caret" aria-live="polite">
+              {typed || "\u00A0"}
+            </span>
+          </div>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
             iViz is the digital practice of InfoViz LLC — building websites,
             custom applications, AI solutions, automation, and Microsoft 365
             experiences for organizations that want results, not buzzwords.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild variant="hero" size="xl">
+            <Button asChild variant="hero" size="xl" className="rounded-full animate-soft-pulse">
               <a href="#projects">View My Work <ArrowRight className="h-4 w-4" /></a>
             </Button>
-            <Button asChild variant="soft" size="xl">
+            <Button asChild variant="soft" size="xl" className="rounded-full animate-soft-pulse" style={{ animationDelay: "-1.3s" }}>
               <a href="#contact">Hire Me</a>
             </Button>
           </div>
@@ -325,17 +418,36 @@ function Skills() {
                 <div className={`inline-grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${cat.accent} text-brand-foreground shadow-elegant`}>
                   <cat.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-5 font-display text-lg font-semibold">{cat.title}</h3>
-                <ul className="mt-4 space-y-2.5">
+                <h3 className={`mt-5 font-display text-lg font-semibold ${cat.headerColor}`}>{cat.title}</h3>
+
+                {/* Skill level bar */}
+                <div className="mt-4">
+                  <div className="mb-1.5 flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <span>{cat.levelLabel}</span>
+                    <span className={cat.headerColor}>{cat.level}%</span>
+                  </div>
+                  <div className="level-bar" style={{ ["--bar-fill" as never]: cat.barFill }}>
+                    <span style={{ width: `${cat.level}%` }} />
+                  </div>
+                </div>
+
+                {/* Tech icons with hover-name reveal */}
+                <div className="mt-6 grid grid-cols-4 gap-3">
                   {cat.items.map((it) => (
-                    <li key={it.name} className="flex items-center gap-3 rounded-lg border border-border/60 bg-background/40 px-3 py-2 text-sm text-foreground/90 transition hover:border-brand/40 hover:bg-secondary/60">
-                      <span className="grid h-7 w-7 place-items-center rounded-md bg-secondary text-cyan">
-                        <it.icon className="h-3.5 w-3.5" />
+                    <div
+                      key={it.name}
+                      className="skill-icon group/icon flex flex-col items-center"
+                    >
+                      <span
+                        className="grid h-12 w-12 place-items-center rounded-xl border border-border/60 bg-background/50 text-foreground transition hover:scale-110 hover:border-brand/50 hover:text-cyan"
+                        aria-label={it.name}
+                      >
+                        <it.icon className="h-5 w-5" />
                       </span>
-                      {it.name}
-                    </li>
+                      <span className="skill-name">{it.name}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           ))}
@@ -344,6 +456,37 @@ function Skills() {
     </section>
   );
 }
+
+const PROJECT_CATEGORIES = [
+  {
+    key: "Frontend",
+    label: "Frontend",
+    color: "text-cyan",
+    bg: "bg-cyan/10 border-cyan/30",
+    indices: [0],
+  },
+  {
+    key: "Backend",
+    label: "Backend",
+    color: "text-emerald-400",
+    bg: "bg-emerald-400/10 border-emerald-400/30",
+    indices: [2],
+  },
+  {
+    key: "AI",
+    label: "AI & ML",
+    color: "text-violet-300",
+    bg: "bg-violet-500/10 border-violet-400/30",
+    indices: [1],
+  },
+  {
+    key: "DevOps",
+    label: "DevOps & Strategy",
+    color: "text-amber-300",
+    bg: "bg-amber-400/10 border-amber-400/30",
+    indices: [3],
+  },
+] as const;
 
 function Projects() {
   return (
@@ -357,34 +500,69 @@ function Projects() {
           />
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {PROJECTS.map((p) => (
-            <article
-              key={p.title}
-              className="reveal card-glow group relative overflow-hidden rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-elegant md:p-9"
-            >
-              <div className={`absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br ${p.gradient} blur-3xl transition-opacity duration-500 group-hover:opacity-100`} />
-              <div className="relative">
-                <div className="flex items-center gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-brand text-brand-foreground shadow-elegant">
-                    <p.icon className="h-6 w-6" />
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan">Capability</span>
-                </div>
-                <h3 className="mt-5 font-display text-2xl font-bold tracking-tight md:text-[26px]">{p.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{p.desc}</p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {p.badges.map((b) => (
-                    <span
-                      key={b}
-                      className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-medium text-foreground/90 transition group-hover:border-brand/40"
-                    >
-                      {b}
-                    </span>
-                  ))}
-                </div>
+        <div className="mt-14 space-y-16">
+          {PROJECT_CATEGORIES.map((cat) => (
+            <div key={cat.key} className="reveal">
+              <div className="flex items-center gap-3">
+                <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] ${cat.color} ${cat.bg}`}>
+                  {cat.label}
+                </span>
+                <span className={`h-px flex-1 bg-gradient-to-r ${cat.color === "text-cyan" ? "from-cyan/40" : cat.color === "text-emerald-400" ? "from-emerald-400/40" : cat.color === "text-violet-300" ? "from-violet-400/40" : "from-amber-400/40"} to-transparent`} />
               </div>
-            </article>
+
+              <div className="mt-6 grid gap-6 md:grid-cols-2">
+                {cat.indices.map((i) => {
+                  const p = PROJECTS[i];
+                  return (
+                    <article
+                      key={p.title}
+                      className="project-card card-glow group relative overflow-hidden rounded-3xl p-7 md:p-9"
+                      style={{
+                        ["--card-accent" as never]: p.accentBorder,
+                        ["--card-glow" as never]: p.accentGlow,
+                      }}
+                    >
+                      <div className={`pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gradient-to-br ${p.gradient} blur-3xl transition-opacity duration-500 group-hover:opacity-100`} />
+                      <div className="relative">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="grid h-12 w-12 place-items-center rounded-2xl text-brand-foreground shadow-elegant"
+                            style={{ background: p.accentBorder }}
+                          >
+                            <p.icon className="h-6 w-6" />
+                          </div>
+                          <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${p.accentText}`}>{cat.label}</span>
+                        </div>
+                        <h3 className="mt-5 font-display text-2xl font-bold tracking-tight md:text-[26px]">{p.title}</h3>
+                        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{p.desc}</p>
+                        <div className="mt-6 flex flex-wrap gap-2">
+                          {p.badges.map((b) => (
+                            <span
+                              key={b}
+                              className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-medium text-foreground/90"
+                            >
+                              {b}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="mt-7 flex flex-wrap gap-3">
+                          <Button asChild size="sm" variant="hero" className="rounded-full">
+                            <a href={p.demo} target="_blank" rel="noreferrer">
+                              <ExternalLink className="h-4 w-4" /> Live Demo
+                            </a>
+                          </Button>
+                          <Button asChild size="sm" variant="soft" className="rounded-full">
+                            <a href={p.repo} target="_blank" rel="noreferrer">
+                              <Github className="h-4 w-4" /> GitHub
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </div>
       </div>
