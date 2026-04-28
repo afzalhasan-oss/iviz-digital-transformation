@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
   { href: "#about", label: "About" },
@@ -14,6 +16,8 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -42,9 +46,30 @@ export function Header() {
           ))}
         </nav>
         <div className="hidden lg:block">
-          <Button asChild variant="hero" size="sm">
-            <a href="#contact">Hire Me</a>
-          </Button>
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Button asChild variant="soft" size="sm">
+                <Link to="/dashboard"><LayoutDashboard className="h-4 w-4" /> Dashboard</Link>
+              </Button>
+              <Button
+                variant="hero"
+                size="sm"
+                onClick={async () => { await signOut(); navigate({ to: "/" }); }}
+              >
+                <LogOut className="h-4 w-4" /> Sign out
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button asChild variant="soft" size="sm">
+                <Link to="/login">Log in</Link>
+              </Button>
+              <Button asChild variant="hero" size="sm">
+                <Link to="/signup">Sign up</Link>
+              </Button>
+            </div>
+          )}
+        </div>
         </div>
         <button
           aria-label="Toggle menu"
@@ -67,9 +92,30 @@ export function Header() {
                 {item.label}
               </a>
             ))}
-            <Button asChild variant="hero" className="mt-2 w-full" size="lg">
-              <a href="#contact" onClick={() => setOpen(false)}>Hire Me</a>
-            </Button>
+            {user ? (
+              <>
+                <Button asChild variant="soft" className="mt-2 w-full" size="lg">
+                  <Link to="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
+                </Button>
+                <Button
+                  variant="hero"
+                  className="mt-2 w-full"
+                  size="lg"
+                  onClick={async () => { setOpen(false); await signOut(); navigate({ to: "/" }); }}
+                >
+                  Sign out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="soft" className="mt-2 w-full" size="lg">
+                  <Link to="/login" onClick={() => setOpen(false)}>Log in</Link>
+                </Button>
+                <Button asChild variant="hero" className="mt-2 w-full" size="lg">
+                  <Link to="/signup" onClick={() => setOpen(false)}>Sign up</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
