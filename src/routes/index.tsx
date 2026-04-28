@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
-  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck,
+  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck, Github, ExternalLink,
   Zap, Users, Layers, CheckCircle2, Mail, Phone, MapPin, Send, Briefcase,
   Award, Rocket, Building2, GraduationCap, Atom, Palette, Database, Cog,
   GitBranch, Server, Brain, Workflow, MessageSquareCode, CloudUpload,
