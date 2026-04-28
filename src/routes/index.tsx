@@ -290,10 +290,10 @@ function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild variant="hero" size="xl" className="rounded-full animate-soft-pulse">
-              <a href="#projects">View My Work <ArrowRight className="h-4 w-4" /></a>
+              <a href="#projects">Explore Our Work <ArrowRight className="h-4 w-4" /></a>
             </Button>
             <Button asChild variant="soft" size="xl" className="rounded-full animate-soft-pulse" style={{ animationDelay: "-1.3s" }}>
-              <a href="#contact">Hire Me</a>
+              <a href="#contact">Work With Us</a>
             </Button>
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
