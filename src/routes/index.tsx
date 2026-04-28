@@ -7,7 +7,9 @@ import {
   Zap, Users, Layers, CheckCircle2, Mail, Phone, MapPin, Send, Briefcase,
   Award, Rocket, Building2, GraduationCap, Atom, Palette, Database, Cog,
   GitBranch, Server, Brain, Workflow, MessageSquareCode, CloudUpload,
+  BookOpen, Calendar, Clock, Users2, CircuitBoard,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -203,6 +205,7 @@ function HomePage() {
       <Skills />
       <Projects />
       <Experience />
+      <Education />
       <Contact />
     </SiteLayout>
   );
