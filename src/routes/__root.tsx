@@ -34,6 +34,12 @@ export const Route = createRootRoute({
       { name: "author", content: "InfoViz LLC" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "iViz — AI, Apps, Automation | InfoViz LLC" },
+      { name: "twitter:title", content: "iViz — AI, Apps, Automation | InfoViz LLC" },
+      { property: "og:description", content: "iViz helps small businesses, nonprofits, and public sector teams modernize with AI, custom applications, Microsoft 365, and automation." },
+      { name: "twitter:description", content: "iViz helps small businesses, nonprofits, and public sector teams modernize with AI, custom applications, Microsoft 365, and automation." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/68195d61-60fa-4fff-a1cc-32aad59bfebf/id-preview-aad63e3a--a03987a7-b34e-471a-9e07-5d39b64560b0.lovable.app-1777435510538.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/68195d61-60fa-4fff-a1cc-32aad59bfebf/id-preview-aad63e3a--a03987a7-b34e-471a-9e07-5d39b64560b0.lovable.app-1777435510538.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
