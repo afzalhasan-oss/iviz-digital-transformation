@@ -13,8 +13,17 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as CoursesIndexRouteImport } from './routes/courses.index'
+import { Route as EnrollCourseSlugRouteImport } from './routes/enroll.$courseSlug'
+import { Route as DashboardSupportRouteImport } from './routes/dashboard.support'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
+import { Route as DashboardPaymentsRouteImport } from './routes/dashboard.payments'
+import { Route as DashboardCoursesRouteImport } from './routes/dashboard.courses'
+import { Route as CoursesCourseSlugRouteImport } from './routes/courses.$courseSlug'
+import { Route as DashboardLearnIndexRouteImport } from './routes/dashboard.learn.index'
+import { Route as DashboardLearnCourseSlugRouteImport } from './routes/dashboard.learn.$courseSlug'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -36,76 +45,184 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const CoursesIndexRoute = CoursesIndexRouteImport.update({
+  id: '/courses/',
+  path: '/courses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnrollCourseSlugRoute = EnrollCourseSlugRouteImport.update({
+  id: '/enroll/$courseSlug',
+  path: '/enroll/$courseSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardSupportRoute = DashboardSupportRouteImport.update({
+  id: '/dashboard/support',
+  path: '/dashboard/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/dashboard/profile',
+  path: '/dashboard/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardPaymentsRoute = DashboardPaymentsRouteImport.update({
+  id: '/dashboard/payments',
+  path: '/dashboard/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardCoursesRoute = DashboardCoursesRouteImport.update({
+  id: '/dashboard/courses',
+  path: '/dashboard/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesCourseSlugRoute = CoursesCourseSlugRouteImport.update({
+  id: '/courses/$courseSlug',
+  path: '/courses/$courseSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardLearnIndexRoute = DashboardLearnIndexRouteImport.update({
+  id: '/dashboard/learn/',
+  path: '/dashboard/learn/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardLearnCourseSlugRoute =
+  DashboardLearnCourseSlugRouteImport.update({
+    id: '/dashboard/learn/$courseSlug',
+    path: '/dashboard/learn/$courseSlug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/courses/$courseSlug': typeof CoursesCourseSlugRoute
+  '/dashboard/courses': typeof DashboardCoursesRoute
+  '/dashboard/payments': typeof DashboardPaymentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/enroll/$courseSlug': typeof EnrollCourseSlugRoute
+  '/courses/': typeof CoursesIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/learn/$courseSlug': typeof DashboardLearnCourseSlugRoute
+  '/dashboard/learn/': typeof DashboardLearnIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/courses/$courseSlug': typeof CoursesCourseSlugRoute
+  '/dashboard/courses': typeof DashboardCoursesRoute
+  '/dashboard/payments': typeof DashboardPaymentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/enroll/$courseSlug': typeof EnrollCourseSlugRoute
+  '/courses': typeof CoursesIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/learn/$courseSlug': typeof DashboardLearnCourseSlugRoute
+  '/dashboard/learn': typeof DashboardLearnIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/courses/$courseSlug': typeof CoursesCourseSlugRoute
+  '/dashboard/courses': typeof DashboardCoursesRoute
+  '/dashboard/payments': typeof DashboardPaymentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/support': typeof DashboardSupportRoute
+  '/enroll/$courseSlug': typeof EnrollCourseSlugRoute
+  '/courses/': typeof CoursesIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/learn/$courseSlug': typeof DashboardLearnCourseSlugRoute
+  '/dashboard/learn/': typeof DashboardLearnIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/dashboard'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/courses/$courseSlug'
+    | '/dashboard/courses'
+    | '/dashboard/payments'
+    | '/dashboard/profile'
+    | '/dashboard/support'
+    | '/enroll/$courseSlug'
+    | '/courses/'
+    | '/dashboard/'
+    | '/dashboard/learn/$courseSlug'
+    | '/dashboard/learn/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/courses/$courseSlug'
+    | '/dashboard/courses'
+    | '/dashboard/payments'
+    | '/dashboard/profile'
+    | '/dashboard/support'
+    | '/enroll/$courseSlug'
+    | '/courses'
+    | '/dashboard'
+    | '/dashboard/learn/$courseSlug'
+    | '/dashboard/learn'
   id:
     | '__root__'
     | '/'
-    | '/dashboard'
     | '/forgot-password'
     | '/login'
     | '/reset-password'
     | '/signup'
+    | '/courses/$courseSlug'
+    | '/dashboard/courses'
+    | '/dashboard/payments'
+    | '/dashboard/profile'
+    | '/dashboard/support'
+    | '/enroll/$courseSlug'
+    | '/courses/'
+    | '/dashboard/'
+    | '/dashboard/learn/$courseSlug'
+    | '/dashboard/learn/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
+  CoursesCourseSlugRoute: typeof CoursesCourseSlugRoute
+  DashboardCoursesRoute: typeof DashboardCoursesRoute
+  DashboardPaymentsRoute: typeof DashboardPaymentsRoute
+  DashboardProfileRoute: typeof DashboardProfileRoute
+  DashboardSupportRoute: typeof DashboardSupportRoute
+  EnrollCourseSlugRoute: typeof EnrollCourseSlugRoute
+  CoursesIndexRoute: typeof CoursesIndexRoute
+  DashboardLearnCourseSlugRoute: typeof DashboardLearnCourseSlugRoute
+  DashboardLearnIndexRoute: typeof DashboardLearnIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -138,13 +255,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -152,16 +262,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/courses/': {
+      id: '/courses/'
+      path: '/courses'
+      fullPath: '/courses/'
+      preLoaderRoute: typeof CoursesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enroll/$courseSlug': {
+      id: '/enroll/$courseSlug'
+      path: '/enroll/$courseSlug'
+      fullPath: '/enroll/$courseSlug'
+      preLoaderRoute: typeof EnrollCourseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/support': {
+      id: '/dashboard/support'
+      path: '/dashboard/support'
+      fullPath: '/dashboard/support'
+      preLoaderRoute: typeof DashboardSupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/dashboard/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/payments': {
+      id: '/dashboard/payments'
+      path: '/dashboard/payments'
+      fullPath: '/dashboard/payments'
+      preLoaderRoute: typeof DashboardPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/courses': {
+      id: '/dashboard/courses'
+      path: '/dashboard/courses'
+      fullPath: '/dashboard/courses'
+      preLoaderRoute: typeof DashboardCoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses/$courseSlug': {
+      id: '/courses/$courseSlug'
+      path: '/courses/$courseSlug'
+      fullPath: '/courses/$courseSlug'
+      preLoaderRoute: typeof CoursesCourseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/learn/': {
+      id: '/dashboard/learn/'
+      path: '/dashboard/learn'
+      fullPath: '/dashboard/learn/'
+      preLoaderRoute: typeof DashboardLearnIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/learn/$courseSlug': {
+      id: '/dashboard/learn/$courseSlug'
+      path: '/dashboard/learn/$courseSlug'
+      fullPath: '/dashboard/learn/$courseSlug'
+      preLoaderRoute: typeof DashboardLearnCourseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
+  CoursesCourseSlugRoute: CoursesCourseSlugRoute,
+  DashboardCoursesRoute: DashboardCoursesRoute,
+  DashboardPaymentsRoute: DashboardPaymentsRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
+  DashboardSupportRoute: DashboardSupportRoute,
+  EnrollCourseSlugRoute: EnrollCourseSlugRoute,
+  CoursesIndexRoute: CoursesIndexRoute,
+  DashboardLearnCourseSlugRoute: DashboardLearnCourseSlugRoute,
+  DashboardLearnIndexRoute: DashboardLearnIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
