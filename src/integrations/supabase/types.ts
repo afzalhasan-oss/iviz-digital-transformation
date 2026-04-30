@@ -47,6 +47,254 @@ export type Database = {
         }
         Relationships: []
       }
+      course_lessons: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          duration_minutes: number | null
+          id: string
+          module_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          duration_minutes?: number | null
+          id?: string
+          module_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          duration_minutes?: number | null
+          id?: string
+          module_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_lessons_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_modules: {
+        Row: {
+          course_id: string
+          created_at: string
+          display_order: number
+          id: string
+          summary: string | null
+          title: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          summary?: string | null
+          title: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          summary?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          created_at: string
+          display_order: number
+          duration: string
+          format: string
+          id: string
+          instructor_bio: string | null
+          instructor_name: string | null
+          level: string
+          overview: string | null
+          price_cents: number
+          schedule: string | null
+          short_description: string
+          slug: string
+          title: string
+          updated_at: string
+          what_youll_learn: string[] | null
+          who_for: string | null
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          duration: string
+          format: string
+          id?: string
+          instructor_bio?: string | null
+          instructor_name?: string | null
+          level: string
+          overview?: string | null
+          price_cents?: number
+          schedule?: string | null
+          short_description: string
+          slug: string
+          title: string
+          updated_at?: string
+          what_youll_learn?: string[] | null
+          who_for?: string | null
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          duration?: string
+          format?: string
+          id?: string
+          instructor_bio?: string | null
+          instructor_name?: string | null
+          level?: string
+          overview?: string | null
+          price_cents?: number
+          schedule?: string | null
+          short_description?: string
+          slug?: string
+          title?: string
+          updated_at?: string
+          what_youll_learn?: string[] | null
+          who_for?: string | null
+        }
+        Relationships: []
+      }
+      enrollments: {
+        Row: {
+          amount_paid_cents: number
+          course_id: string
+          created_at: string
+          enrolled_at: string
+          id: string
+          payment_provider: string | null
+          payment_reference: string | null
+          payment_status: string
+          schedule_choice: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_paid_cents?: number
+          course_id: string
+          created_at?: string
+          enrolled_at?: string
+          id?: string
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          schedule_choice?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_paid_cents?: number
+          course_id?: string
+          created_at?: string
+          enrolled_at?: string
+          id?: string
+          payment_provider?: string | null
+          payment_reference?: string | null
+          payment_status?: string
+          schedule_choice?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lesson_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "course_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          experience_level: string | null
+          full_name: string | null
+          id: string
+          learning_goal: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          experience_level?: string | null
+          full_name?: string | null
+          id?: string
+          learning_goal?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          experience_level?: string | null
+          full_name?: string | null
+          id?: string
+          learning_goal?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
