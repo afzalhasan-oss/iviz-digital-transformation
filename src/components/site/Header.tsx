@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard, GraduationCap } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,12 @@ export function Header() {
               {item.label}
             </a>
           ))}
+          <Link
+            to="/courses"
+            className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Courses
+          </Link>
         </nav>
         <div className="hidden lg:block">
           {user ? (
@@ -92,6 +98,13 @@ export function Header() {
                 {item.label}
               </a>
             ))}
+            <Link
+              to="/courses"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 rounded-lg px-4 py-3 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+            >
+              <GraduationCap className="h-4 w-4" /> Courses
+            </Link>
             {user ? (
               <>
                 <Button asChild variant="soft" className="mt-2 w-full" size="lg">
