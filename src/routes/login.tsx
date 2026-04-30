@@ -75,7 +75,12 @@ function LoginPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link to="/forgot-password" className="text-xs font-medium text-cyan hover:underline underline-offset-4">
+                    Forgot password?
+                  </Link>
+                </div>
                 <div className="relative">
                   <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input id="password" name="password" type="password" required minLength={6} maxLength={72} placeholder="••••••••" className="h-11 pl-10 bg-background/40" />
