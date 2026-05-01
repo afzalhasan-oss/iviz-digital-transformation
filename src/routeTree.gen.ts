@@ -51,9 +51,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRoute,
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CoursesIndexRoute = CoursesIndexRouteImport.update({
   id: '/courses/',
@@ -221,6 +221,7 @@ export interface RootRouteChildren {
   DashboardSupportRoute: typeof DashboardSupportRoute
   EnrollCourseSlugRoute: typeof EnrollCourseSlugRoute
   CoursesIndexRoute: typeof CoursesIndexRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardLearnCourseSlugRoute: typeof DashboardLearnCourseSlugRoute
   DashboardLearnIndexRoute: typeof DashboardLearnIndexRoute
 }
@@ -264,10 +265,10 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/'
+      path: '/dashboard'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof rootRouteImport
     }
     '/courses/': {
       id: '/courses/'
@@ -348,6 +349,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardSupportRoute: DashboardSupportRoute,
   EnrollCourseSlugRoute: EnrollCourseSlugRoute,
   CoursesIndexRoute: CoursesIndexRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
   DashboardLearnCourseSlugRoute: DashboardLearnCourseSlugRoute,
   DashboardLearnIndexRoute: DashboardLearnIndexRoute,
 }
