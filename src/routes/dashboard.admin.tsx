@@ -153,7 +153,15 @@ function RegistrationCard({
   const [notes, setNotes] = useState(row.admin_notes ?? "");
   const [busy, setBusy] = useState(false);
 
-  async function update(patch: Partial<Enrollment>) {
+  type EnrollmentUpdate = {
+    payment_status?: string;
+    payment_link?: string | null;
+    admin_notes?: string | null;
+    amount_paid_cents?: number;
+    payment_provider?: string | null;
+    payment_reference?: string | null;
+  };
+  async function update(patch: EnrollmentUpdate) {
     setBusy(true);
     const { error } = await supabase
       .from("enrollments")
@@ -178,7 +186,7 @@ function RegistrationCard({
       payment_provider: "manual",
       payment_reference: `manual_${Date.now()}`,
       admin_notes: notes || row.admin_notes,
-    } as Partial<Enrollment>);
+    });
     toast.success("Marked as paid — course unlocked for the student.");
   }
 

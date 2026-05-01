@@ -21,6 +21,7 @@ import { Route as DashboardSupportRouteImport } from './routes/dashboard.support
 import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
 import { Route as DashboardPaymentsRouteImport } from './routes/dashboard.payments'
 import { Route as DashboardCoursesRouteImport } from './routes/dashboard.courses'
+import { Route as DashboardAdminRouteImport } from './routes/dashboard.admin'
 import { Route as CoursesCourseSlugRouteImport } from './routes/courses.$courseSlug'
 import { Route as DashboardLearnIndexRouteImport } from './routes/dashboard.learn.index'
 import { Route as DashboardLearnCourseSlugRouteImport } from './routes/dashboard.learn.$courseSlug'
@@ -85,6 +86,11 @@ const DashboardCoursesRoute = DashboardCoursesRouteImport.update({
   path: '/dashboard/courses',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardAdminRoute = DashboardAdminRouteImport.update({
+  id: '/dashboard/admin',
+  path: '/dashboard/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesCourseSlugRoute = CoursesCourseSlugRouteImport.update({
   id: '/courses/$courseSlug',
   path: '/courses/$courseSlug',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/courses/$courseSlug': typeof CoursesCourseSlugRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
   '/dashboard/courses': typeof DashboardCoursesRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/courses/$courseSlug': typeof CoursesCourseSlugRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
   '/dashboard/courses': typeof DashboardCoursesRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/courses/$courseSlug': typeof CoursesCourseSlugRoute
+  '/dashboard/admin': typeof DashboardAdminRoute
   '/dashboard/courses': typeof DashboardCoursesRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
   '/dashboard/profile': typeof DashboardProfileRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/courses/$courseSlug'
+    | '/dashboard/admin'
     | '/dashboard/courses'
     | '/dashboard/payments'
     | '/dashboard/profile'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/courses/$courseSlug'
+    | '/dashboard/admin'
     | '/dashboard/courses'
     | '/dashboard/payments'
     | '/dashboard/profile'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/courses/$courseSlug'
+    | '/dashboard/admin'
     | '/dashboard/courses'
     | '/dashboard/payments'
     | '/dashboard/profile'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
   CoursesCourseSlugRoute: typeof CoursesCourseSlugRoute
+  DashboardAdminRoute: typeof DashboardAdminRoute
   DashboardCoursesRoute: typeof DashboardCoursesRoute
   DashboardPaymentsRoute: typeof DashboardPaymentsRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
@@ -312,6 +325,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardCoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/dashboard/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses/$courseSlug': {
       id: '/courses/$courseSlug'
       path: '/courses/$courseSlug'
@@ -343,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
   CoursesCourseSlugRoute: CoursesCourseSlugRoute,
+  DashboardAdminRoute: DashboardAdminRoute,
   DashboardCoursesRoute: DashboardCoursesRoute,
   DashboardPaymentsRoute: DashboardPaymentsRoute,
   DashboardProfileRoute: DashboardProfileRoute,
