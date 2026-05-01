@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  BookOpen, GraduationCap, CreditCard, Calendar, ArrowRight, Sparkles,
+  BookOpen, GraduationCap, CreditCard, Calendar, ArrowRight, Sparkles, Clock,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
@@ -40,6 +40,7 @@ function Home() {
   }, []);
 
   const paid = rows?.filter((r) => r.payment_status === "paid") ?? [];
+  const pending = rows?.filter((r) => r.payment_status === "pending_approval" || r.payment_status === "approved") ?? [];
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
@@ -68,8 +69,8 @@ function Home() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-3">
-        <Stat icon={BookOpen} label="Enrolled courses" value={String(paid.length)} />
-        <Stat icon={Calendar} label="Upcoming class" value={paid.length ? "Schedule pending" : "—"} />
+        <Stat icon={BookOpen} label="Active courses" value={String(paid.length)} />
+        <Stat icon={Clock} label="Pending registrations" value={String(pending.length)} />
         <Stat icon={CreditCard} label="Payments" value={`$${(paid.reduce((s, r) => s + r.amount_paid_cents, 0) / 100).toFixed(0)}`} />
       </div>
 
