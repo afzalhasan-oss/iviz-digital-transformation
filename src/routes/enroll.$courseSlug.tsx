@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2, CreditCard, Lock } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ClipboardCheck, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
@@ -97,29 +97,22 @@ function Enroll() {
       phone: parsed.data.phone,
     }, { onConflict: "user_id" });
 
-    // TODO: Stripe integration — when enable_stripe_payments is configured,
-    // replace this simulated payment with a Stripe Checkout session redirect.
-    // Example flow:
-    //   1. Call createServerFn createCheckoutSession({ courseId, priceId }).
-    //   2. Redirect user to Stripe-hosted checkout URL.
-    //   3. On success webhook, mark enrollment paid and send receipt.
-
+    // Submit registration for owner approval — payment happens off-platform via a link the owner sends.
     const { error } = await supabase.from("enrollments").upsert({
       user_id: user.id,
       course_id: course.id,
       schedule_choice: parsed.data.schedule_choice,
-      payment_status: "paid", // simulated
-      amount_paid_cents: course.price_cents,
-      payment_provider: "simulated",
-      payment_reference: `sim_${Date.now()}`,
+      payment_status: "pending_approval",
+      amount_paid_cents: 0,
+      payment_provider: "manual",
     }, { onConflict: "user_id,course_id" });
     setSubmitting(false);
     if (error) {
       toast.error(error.message);
       return;
     }
-    toast.success("Payment successful — course unlocked!");
-    navigate({ to: "/dashboard/learn/$courseSlug", params: { courseSlug: course.slug } });
+    toast.success("Registration submitted! The InfoViz team will review and email you a payment link.");
+    navigate({ to: "/dashboard/courses" });
   }
 
   return (
@@ -132,8 +125,11 @@ function Enroll() {
 
         <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_380px]">
           <div className="card-glow rounded-3xl p-8 shadow-elegant md:p-10">
-            <h1 className="font-display text-3xl font-bold tracking-tight">Complete your enrollment</h1>
-            <p className="mt-2 text-muted-foreground">Confirm details and proceed to payment.</p>
+            <h1 className="font-display text-3xl font-bold tracking-tight">Register for this course</h1>
+            <p className="mt-2 text-muted-foreground">
+              Submit your registration. Our team will review it and email you a secure payment link.
+              Your course content unlocks once payment is confirmed.
+            </p>
             <form onSubmit={onSubmit} className="mt-8 grid gap-5 md:grid-cols-2">
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="full_name">Full name</Label>
@@ -169,10 +165,10 @@ function Enroll() {
               </div>
               <div className="md:col-span-2">
                 <Button type="submit" variant="hero" size="lg" disabled={submitting} className="w-full">
-                  <CreditCard className="h-4 w-4" /> {submitting ? "Processing…" : `Proceed to Payment — $${(course.price_cents / 100).toFixed(0)}`}
+                  <ClipboardCheck className="h-4 w-4" /> {submitting ? "Submitting…" : "Submit registration for approval"}
                 </Button>
                 <p className="mt-3 text-center text-xs text-muted-foreground">
-                  This is a simulated checkout. Stripe will be enabled to take real payments.
+                  No payment is collected here. After review, you'll receive an email at {form.email || "your address"} with a payment link.
                 </p>
               </div>
             </form>
@@ -184,12 +180,13 @@ function Enroll() {
               <h2 className="mt-2 font-display text-lg font-semibold">{course.title}</h2>
               <div className="mt-1 text-xs text-muted-foreground">{course.level} • {course.duration} • {course.format}</div>
               <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-4">
-                <span className="text-sm text-muted-foreground">Total</span>
+                <span className="text-sm text-muted-foreground">Tuition</span>
                 <span className="font-display text-2xl font-bold text-gradient">${(course.price_cents / 100).toFixed(0)}</span>
               </div>
               <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-cyan" /> Instant course access after payment</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-cyan" /> Instructor-led sessions</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-cyan" /> Owner-reviewed registration</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-cyan" /> Secure payment link emailed to you</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-cyan" /> Course unlocks instantly after approval</li>
                 <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-cyan" /> Certificate of completion</li>
               </ul>
             </div>

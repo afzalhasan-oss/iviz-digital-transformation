@@ -182,40 +182,52 @@ export type Database = {
       }
       enrollments: {
         Row: {
+          admin_notes: string | null
           amount_paid_cents: number
           course_id: string
           created_at: string
           enrolled_at: string
           id: string
+          payment_link: string | null
           payment_provider: string | null
           payment_reference: string | null
           payment_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           schedule_choice: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
           amount_paid_cents?: number
           course_id: string
           created_at?: string
           enrolled_at?: string
           id?: string
+          payment_link?: string | null
           payment_provider?: string | null
           payment_reference?: string | null
           payment_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           schedule_choice?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
           amount_paid_cents?: number
           course_id?: string
           created_at?: string
           enrolled_at?: string
           id?: string
+          payment_link?: string | null
           payment_provider?: string | null
           payment_reference?: string | null
           payment_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           schedule_choice?: string | null
           updated_at?: string
           user_id?: string
