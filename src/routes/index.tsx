@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
-  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck, Github, ExternalLink,
+  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck,
   Zap, Users, Layers, CheckCircle2, Mail, Phone, MapPin, Send, Briefcase,
   Award, Rocket, Building2, GraduationCap, Atom, Palette, Database, Cog,
   GitBranch, Server, Brain, Workflow, MessageSquareCode, CloudUpload,
