@@ -6,12 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#education", label: "Classes" },
-  { href: "#experience", label: "Experience" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#projects", label: "Services" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#contact", label: "Contact" },
 ] as const;
 
 export function Header() {

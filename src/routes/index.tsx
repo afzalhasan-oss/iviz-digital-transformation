@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
 import {
-  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck, Github, ExternalLink,
+  ArrowRight, Sparkles, Bot, Code2, Cloud, Compass, Globe, ShieldCheck,
   Zap, Users, Layers, CheckCircle2, Mail, Phone, MapPin, Send, Briefcase,
   Award, Rocket, Building2, GraduationCap, Atom, Palette, Database, Cog,
   GitBranch, Server, Brain, Workflow, MessageSquareCode, CloudUpload,
@@ -550,13 +550,13 @@ function Projects() {
                         </div>
                         <div className="mt-7 flex flex-wrap gap-3">
                           <Button asChild size="sm" variant="hero" className="rounded-full">
-                            <a href={p.demo} target="_blank" rel="noreferrer">
-                              <ExternalLink className="h-4 w-4" /> Live Demo
+                            <a href="#contact">
+                              <ArrowRight className="h-4 w-4" /> Start a project
                             </a>
                           </Button>
                           <Button asChild size="sm" variant="soft" className="rounded-full">
-                            <a href={p.repo} target="_blank" rel="noreferrer">
-                              <Github className="h-4 w-4" /> GitHub
+                            <a href="#about">
+                              Learn more
                             </a>
                           </Button>
                         </div>
@@ -620,251 +620,191 @@ function Experience() {
   );
 }
 
-const COURSES = [
-  {
-    title: "AI Foundations: Models & Mindset",
-    desc: "Plain-English tour of today's leading models — GPT, Claude, Gemini, and open-source LLMs — when each shines, and how teams put them to work safely.",
-    duration: "4 weeks · live online",
-    starts: "Starts the 1st Monday of every month",
-    seats: "12 seats per cohort",
-    level: "Beginner",
-    icon: Brain,
-    accentBorder: "linear-gradient(135deg, oklch(0.7 0.2 300), oklch(0.65 0.22 320))",
-    accentGlow: "oklch(0.65 0.22 310 / 0.55)",
-    accentText: "text-violet-300",
-    topics: ["LLM landscape", "Strengths & limits", "Responsible AI"],
-  },
-  {
-    title: "Prompt Engineering & Workflow Design",
-    desc: "Learn to design reliable prompts, structured outputs, and multi-step AI workflows that produce consistent results in real business processes.",
-    duration: "3 weeks · live online + labs",
-    starts: "New cohort every 6 weeks",
-    seats: "16 seats per cohort",
-    level: "Intermediate",
-    icon: MessageSquareCode,
-    accentBorder: "linear-gradient(135deg, oklch(0.78 0.16 200), oklch(0.7 0.18 220))",
-    accentGlow: "oklch(0.7 0.18 210 / 0.55)",
-    accentText: "text-cyan",
-    topics: ["System prompts", "RAG basics", "Evaluation"],
-  },
-  {
-    title: "Build with AI: Apps, Agents & Automation",
-    desc: "Hands-on engineering track. Ship a real AI assistant, document copilot, or workflow agent end-to-end using modern tooling and best practices.",
-    duration: "6 weeks · project-based",
-    starts: "Quarterly cohorts",
-    seats: "10 seats per cohort",
-    level: "Advanced",
-    icon: CircuitBoard,
-    accentBorder: "linear-gradient(135deg, oklch(0.78 0.17 150), oklch(0.62 0.18 155))",
-    accentGlow: "oklch(0.7 0.18 150 / 0.55)",
-    accentText: "text-emerald-400",
-    topics: ["Agents & tools", "Vector search", "Production deployment"],
-  },
-  {
-    title: "AI for Microsoft 365 & Power Platform",
-    desc: "Practical training for teams already on Microsoft 365 — Copilot, Power Automate AI Builder, and SharePoint scenarios that deliver real productivity gains.",
-    duration: "2 weeks · live workshops",
-    starts: "Monthly cohorts",
-    seats: "20 seats per cohort",
-    level: "All levels",
-    icon: Cloud,
-    accentBorder: "linear-gradient(135deg, oklch(0.85 0.16 85), oklch(0.72 0.18 55))",
-    accentGlow: "oklch(0.78 0.17 70 / 0.55)",
-    accentText: "text-amber-300",
-    topics: ["Copilot", "AI Builder", "Adoption playbooks"],
-  },
-];
+type CourseCardData = {
+  id: string;
+  slug: string;
+  title: string;
+  short_description: string;
+  level: string;
+  duration: string;
+  format: string;
+  price_cents: number;
+  display_order: number;
+};
 
-const enrollSchema = z.object({
-  full_name: z.string().trim().min(1, "Please enter your name").max(120),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  course: z.string().min(1, "Please choose a course").max(120),
-  experience_level: z.string().min(1, "Please choose your experience level").max(40),
-  message: z.string().trim().max(2000).optional().or(z.literal("")),
-});
+const LEVEL_STYLES: Record<string, { border: string; glow: string; text: string; icon: React.ComponentType<{ className?: string }> }> = {
+  Beginner: {
+    border: "linear-gradient(135deg, oklch(0.7 0.2 300), oklch(0.65 0.22 320))",
+    glow: "oklch(0.65 0.22 310 / 0.55)",
+    text: "text-violet-300",
+    icon: Brain,
+  },
+  Intermediate: {
+    border: "linear-gradient(135deg, oklch(0.78 0.16 200), oklch(0.7 0.18 220))",
+    glow: "oklch(0.7 0.18 210 / 0.55)",
+    text: "text-cyan",
+    icon: MessageSquareCode,
+  },
+  Advanced: {
+    border: "linear-gradient(135deg, oklch(0.78 0.17 150), oklch(0.62 0.18 155))",
+    glow: "oklch(0.7 0.18 150 / 0.55)",
+    text: "text-emerald-400",
+    icon: CircuitBoard,
+  },
+  "All levels": {
+    border: "linear-gradient(135deg, oklch(0.85 0.16 85), oklch(0.72 0.18 55))",
+    glow: "oklch(0.78 0.17 70 / 0.55)",
+    text: "text-amber-300",
+    icon: Cloud,
+  },
+};
 
 function Education() {
-  const [submitting, setSubmitting] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<string>(COURSES[0].title);
+  const [courses, setCourses] = useState<CourseCardData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const data = {
-      full_name: String(fd.get("full_name") ?? ""),
-      email: String(fd.get("email") ?? ""),
-      course: String(fd.get("course") ?? selectedCourse),
-      experience_level: String(fd.get("experience_level") ?? ""),
-      message: String(fd.get("message") ?? ""),
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("courses")
+        .select("id, slug, title, short_description, level, duration, format, price_cents, display_order")
+        .order("display_order", { ascending: true });
+      if (!cancelled) {
+        setCourses((data ?? []) as CourseCardData[]);
+        setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
     };
-    const parsed = enrollSchema.safeParse(data);
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
-      return;
-    }
-    setSubmitting(true);
-    const { error } = await supabase.from("class_enrollments").insert({
-      full_name: parsed.data.full_name,
-      email: parsed.data.email,
-      course: parsed.data.course,
-      experience_level: parsed.data.experience_level,
-      message: parsed.data.message || null,
-    });
-    setSubmitting(false);
-    if (error) {
-      toast.error("Couldn't submit your enrollment. Please try again.");
-      return;
-    }
-    toast.success("You're on the list! We'll email cohort details shortly.");
-    (e.target as HTMLFormElement).reset();
-  }
+  }, []);
 
   return (
     <section id="education" className="relative px-5 py-24 md:px-8 md:py-32">
       <div className="absolute inset-0 -z-10 bg-gradient-mesh opacity-70" />
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          eyebrow="Education & Classes"
-          title={<>Learn AI with <span className="text-gradient">iViz</span> — live, hands-on, vendor-neutral.</>}
-          description="iViz runs small-cohort classes that demystify modern AI. Explore today's leading models, learn to design reliable prompts and workflows, and build production-ready AI applications with senior practitioners."
+          eyebrow="Classes & Education"
+          title={<>Learn with <span className="text-gradient">iViz</span> — live, hands-on, vendor-neutral.</>}
+          description="Small-cohort classes taught by senior practitioners. Register online; our team reviews every registration and emails you a secure payment link before your seat is confirmed."
         />
 
         <div className="mt-14 grid gap-6 lg:grid-cols-2">
-          {COURSES.map((c) => (
-            <article
-              key={c.title}
-              className="project-card card-glow group relative overflow-hidden rounded-3xl p-7 md:p-8"
-              style={{
-                ["--card-accent" as never]: c.accentBorder,
-                ["--card-glow" as never]: c.accentGlow,
-              }}
-            >
-              <div className="relative">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="grid h-12 w-12 place-items-center rounded-2xl text-brand-foreground shadow-elegant"
-                      style={{ background: c.accentBorder }}
-                    >
-                      <c.icon className="h-6 w-6" />
+          {loading && (
+            <div className="col-span-full rounded-3xl border border-border/60 bg-card/40 p-10 text-center text-muted-foreground">
+              Loading courses…
+            </div>
+          )}
+          {!loading && courses.length === 0 && (
+            <div className="col-span-full rounded-3xl border border-border/60 bg-card/40 p-10 text-center text-muted-foreground">
+              New cohorts will be announced soon.
+            </div>
+          )}
+          {courses.map((c) => {
+            const style = LEVEL_STYLES[c.level] ?? LEVEL_STYLES["All levels"];
+            const Icon = style.icon;
+            return (
+              <article
+                key={c.id}
+                className="project-card card-glow group relative overflow-hidden rounded-3xl p-7 md:p-8"
+                style={{
+                  ["--card-accent" as never]: style.border,
+                  ["--card-glow" as never]: style.glow,
+                }}
+              >
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="grid h-12 w-12 place-items-center rounded-2xl text-brand-foreground shadow-elegant"
+                        style={{ background: style.border }}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${style.text}`}>{c.level}</span>
                     </div>
-                    <span className={`text-xs font-semibold uppercase tracking-[0.2em] ${c.accentText}`}>{c.level}</span>
-                  </div>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="soft"
-                    className="rounded-full"
-                    onClick={() => {
-                      setSelectedCourse(c.title);
-                      document.getElementById("enroll-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }}
-                  >
-                    Enroll
-                  </Button>
-                </div>
-                <h3 className="mt-5 font-display text-xl font-bold tracking-tight md:text-2xl">{c.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{c.desc}</p>
-
-                <div className="mt-5 grid gap-2 text-sm text-foreground/90 sm:grid-cols-3">
-                  <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-cyan" /> {c.duration}</span>
-                  <span className="flex items-center gap-2"><Calendar className="h-4 w-4 text-cyan" /> {c.starts}</span>
-                  <span className="flex items-center gap-2"><Users2 className="h-4 w-4 text-cyan" /> {c.seats}</span>
-                </div>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {c.topics.map((t) => (
-                    <span key={t} className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-medium text-foreground/90">
-                      {t}
+                    <span className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-semibold text-foreground/90">
+                      ${(c.price_cents / 100).toFixed(0)}
                     </span>
-                  ))}
+                  </div>
+                  <h3 className="mt-5 font-display text-xl font-bold tracking-tight md:text-2xl">{c.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{c.short_description}</p>
+
+                  <div className="mt-5 grid gap-2 text-sm text-foreground/90 sm:grid-cols-3">
+                    <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-cyan" /> {c.duration}</span>
+                    <span className="flex items-center gap-2"><Calendar className="h-4 w-4 text-cyan" /> {c.format}</span>
+                    <span className="flex items-center gap-2"><Users2 className="h-4 w-4 text-cyan" /> Small cohort</span>
+                  </div>
+
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <Button asChild size="sm" variant="hero" className="rounded-full">
+                      <Link to="/enroll/$courseSlug" params={{ courseSlug: c.slug }}>
+                        Register <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button asChild size="sm" variant="soft" className="rounded-full">
+                      <Link to="/courses/$courseSlug" params={{ courseSlug: c.slug }}>
+                        View details
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
-        {/* Enrollment form */}
-        <div id="enroll-form" className="reveal mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
+        {/* How registration works */}
+        <div className="reveal mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur">
-              <BookOpen className="h-3.5 w-3.5 text-cyan" /> Join an upcoming cohort
+              <BookOpen className="h-3.5 w-3.5 text-cyan" /> How registration works
             </span>
             <h3 className="mt-4 font-display text-3xl font-bold tracking-tight md:text-4xl">
-              Reserve your <span className="text-gradient">seat</span>.
+              Simple, reviewed, <span className="text-gradient">no surprises</span>.
             </h3>
             <p className="mt-3 text-muted-foreground">
-              Submit the form and the iViz education team will reach out within
-              one business day with cohort dates, pricing, and onboarding details.
-              Group and nonprofit rates are available.
+              We keep cohorts small and personal, so every registration is reviewed
+              by the iViz team before payment. You'll get a secure payment link by
+              email and access to course content as soon as payment is confirmed.
             </p>
             <ul className="mt-6 space-y-3 text-sm text-foreground/90">
               <li className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 text-cyan" /> Live cohorts taught by senior practitioners</li>
               <li className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 text-cyan" /> Hands-on labs with real-world projects</li>
               <li className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 text-cyan" /> Certificate of completion</li>
-              <li className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 text-cyan" /> Discounts for nonprofits & public sector</li>
+              <li className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 text-cyan" /> Discounts for nonprofits &amp; public sector</li>
             </ul>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild variant="hero" size="lg" className="rounded-full">
+                <Link to="/courses">Browse all courses <ArrowRight className="h-4 w-4" /></Link>
+              </Button>
+              <Button asChild variant="soft" size="lg" className="rounded-full">
+                <a href="#contact">Talk to us</a>
+              </Button>
+            </div>
           </div>
 
-          <form
-            onSubmit={onSubmit}
-            className="card-glow relative rounded-3xl p-7 shadow-elegant md:p-10"
-          >
+          <ol className="card-glow relative space-y-6 rounded-3xl p-8 shadow-elegant md:p-10">
             <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gradient-violet opacity-25 blur-3xl" />
             <div className="absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-gradient-brand opacity-25 blur-3xl" />
-
-            <div className="relative space-y-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field label="Full name" id="full_name">
-                  <Input id="full_name" name="full_name" required maxLength={120} placeholder="Your full name" className="h-11 bg-background/40" />
-                </Field>
-                <Field label="Email" id="enroll_email">
-                  <Input id="enroll_email" name="email" type="email" required maxLength={255} placeholder="you@company.com" className="h-11 bg-background/40" />
-                </Field>
-              </div>
-
-              <Field label="Course" id="course">
-                <select
-                  id="course"
-                  name="course"
-                  required
-                  value={selectedCourse}
-                  onChange={(e) => setSelectedCourse(e.target.value)}
-                  className="h-11 w-full rounded-md border border-input bg-background/40 px-3 text-sm text-foreground"
-                >
-                  {COURSES.map((c) => (
-                    <option key={c.title} value={c.title}>{c.title}</option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label="Experience level" id="experience_level">
-                <select
-                  id="experience_level"
-                  name="experience_level"
-                  required
-                  defaultValue=""
-                  className="h-11 w-full rounded-md border border-input bg-background/40 px-3 text-sm text-foreground"
-                >
-                  <option value="" disabled>Select your level…</option>
-                  <option value="Beginner">Beginner — new to AI</option>
-                  <option value="Intermediate">Intermediate — used AI tools</option>
-                  <option value="Advanced">Advanced — building with AI</option>
-                </select>
-              </Field>
-
-              <Field label="What would you like to get out of the class?" id="enroll_message" optional>
-                <Textarea id="enroll_message" name="message" maxLength={2000} placeholder="Goals, current role, or any questions…" className="min-h-[110px] bg-background/40" />
-              </Field>
-
-              <Button type="submit" variant="hero" size="lg" disabled={submitting} className="w-full">
-                {submitting ? "Submitting…" : <>Reserve my seat <Send className="h-4 w-4" /></>}
-              </Button>
-              <p className="text-center text-xs text-muted-foreground">
-                By enrolling, you agree to be contacted by InfoViz LLC about iViz classes.
-              </p>
-            </div>
-          </form>
+            {[
+              { n: "1", t: "Pick a course", d: "Browse the catalog and choose what fits your goals and experience level." },
+              { n: "2", t: "Register online", d: "Create your account and submit a short registration form — no payment yet." },
+              { n: "3", t: "Get your payment link", d: "Our team reviews and emails you a secure payment link with cohort details." },
+              { n: "4", t: "Start learning", d: "Once payment is confirmed, course content unlocks in your dashboard." },
+            ].map((s) => (
+              <li key={s.n} className="relative flex items-start gap-4">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-brand font-display text-base font-bold text-brand-foreground shadow-elegant">
+                  {s.n}
+                </span>
+                <div>
+                  <h4 className="font-display text-base font-semibold">{s.t}</h4>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
