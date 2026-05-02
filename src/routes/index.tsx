@@ -550,13 +550,13 @@ function Projects() {
                         </div>
                         <div className="mt-7 flex flex-wrap gap-3">
                           <Button asChild size="sm" variant="hero" className="rounded-full">
-                            <a href={p.demo} target="_blank" rel="noreferrer">
-                              <ExternalLink className="h-4 w-4" /> Live Demo
+                            <a href="#contact">
+                              <ArrowRight className="h-4 w-4" /> Start a project
                             </a>
                           </Button>
                           <Button asChild size="sm" variant="soft" className="rounded-full">
-                            <a href={p.repo} target="_blank" rel="noreferrer">
-                              <Github className="h-4 w-4" /> GitHub
+                            <a href="#about">
+                              Learn more
                             </a>
                           </Button>
                         </div>
