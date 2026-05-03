@@ -10,9 +10,16 @@ export const Route = createFileRoute("/courses/")({
     meta: [
       { title: "Courses — iViz | InfoViz LLC" },
       { name: "description", content: "Live online IT and AI courses from InfoViz: AI, web development, Microsoft 365, automation, and full-stack." },
+      { name: "keywords", content: "online IT courses, AI training, web development course, Microsoft 365 training, automation course, full-stack bootcamp" },
+      { property: "og:type", content: "website" },
       { property: "og:title", content: "Courses — iViz" },
+      { property: "og:url", content: "https://infoviz.lovable.app/courses" },
       { property: "og:description", content: "Practical, instructor-led courses in AI, web development, Microsoft 365, and full-stack." },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Courses — iViz" },
+      { name: "twitter:description", content: "Practical, instructor-led courses in AI, web development, Microsoft 365, and full-stack." },
     ],
+    links: [{ rel: "canonical", href: "https://infoviz.lovable.app/courses" }],
   }),
   component: CoursesPage,
 });
