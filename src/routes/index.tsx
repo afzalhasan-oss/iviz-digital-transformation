@@ -27,15 +27,34 @@ export const Route = createFileRoute("/")({
         content:
           "InfoViz LLC (iViz) builds modern websites, applications, AI workflows, and Microsoft 365 solutions for small businesses, nonprofits, and public sector teams.",
       },
+      { name: "keywords", content: "AI consulting, web development, Microsoft 365, automation, custom applications, IT training, online courses, nonprofit IT, small business" },
+      { property: "og:type", content: "website" },
       { property: "og:title", content: "iViz — AI, Apps & Automation" },
+      { property: "og:url", content: "https://infoviz.lovable.app/" },
       {
         property: "og:description",
         content:
           "Modern websites, custom applications, AI workflows, and Microsoft 365 solutions — built for small businesses, nonprofits, and the public sector.",
       },
       { property: "og:image", content: heroImg },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "iViz — AI, Apps & Automation" },
+      { name: "twitter:description", content: "AI, custom apps, Microsoft 365, automation — for small business, nonprofit, and public sector." },
       { name: "twitter:image", content: heroImg },
     ],
+    links: [{ rel: "canonical", href: "https://infoviz.lovable.app/" }],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "InfoViz LLC",
+        alternateName: "iViz",
+        url: "https://infoviz.lovable.app",
+        email: "infoviz.org@gmail.com",
+        telephone: "+1-214-425-7120",
+      }),
+    }],
   }),
   component: HomePage,
 });
