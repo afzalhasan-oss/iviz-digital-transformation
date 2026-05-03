@@ -5,13 +5,54 @@ import { supabase } from "@/integrations/supabase/client";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 
+const SITE_URL = "https://infoviz.lovable.app";
+
 export const Route = createFileRoute("/courses/$courseSlug")({
-  head: () => ({
-    meta: [
-      { title: "Course Details — iViz" },
-      { name: "description", content: "Course details, modules, schedule, and enrollment for iViz courses." },
-    ],
-  }),
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("courses")
+      .select("title, short_description, level, duration, format, price_cents")
+      .eq("slug", params.courseSlug)
+      .maybeSingle();
+    return { seo: data as null | { title: string; short_description: string; level: string; duration: string; format: string; price_cents: number } };
+  },
+  head: ({ loaderData, params }) => {
+    const c = loaderData?.seo;
+    const title = c ? `${c.title} — iViz Course | InfoViz LLC` : "Course Details — iViz | InfoViz LLC";
+    const description = c
+      ? `${c.short_description} Level: ${c.level}. Duration: ${c.duration}. Format: ${c.format}.`
+      : "Live instructor-led courses in AI, web development, Microsoft 365, and automation.";
+    const url = `${SITE_URL}/courses/${params?.courseSlug ?? ""}`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: c
+        ? [{
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Course",
+              name: c.title,
+              description: c.short_description,
+              provider: { "@type": "Organization", name: "InfoViz LLC", url: SITE_URL },
+              url,
+              educationalLevel: c.level,
+              timeRequired: c.duration,
+              offers: { "@type": "Offer", price: (c.price_cents / 100).toFixed(2), priceCurrency: "USD" },
+            }),
+          }]
+        : [],
+    };
+  },
   component: CourseDetail,
 });
 
