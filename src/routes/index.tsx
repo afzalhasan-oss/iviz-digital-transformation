@@ -833,6 +833,9 @@ function Education() {
 }
 
 const contactSchema = z.object({
+  // placeholder — see below
+  __placeholder: z.any().optional(),
+}).extend({
   name: z.string().trim().min(1, "Please enter your name").max(100),
   email: z.string().trim().email("Please enter a valid email").max(255),
   company: z.string().trim().max(150).optional().or(z.literal("")),
