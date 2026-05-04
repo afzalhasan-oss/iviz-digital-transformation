@@ -774,6 +774,8 @@ function Education() {
           })}
         </div>
 
+        <UpcomingSchedule courses={courses} />
+
         {/* How registration works */}
         <div className="reveal mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
           <div>
